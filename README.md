@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+flutter-study 3-2〜3-5を勉強
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
