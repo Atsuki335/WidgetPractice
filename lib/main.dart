@@ -33,6 +33,26 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//3-7
+      appBar: AppBar(
+          leading: Icon(Icons.access_time_filled_sharp),
+          title: Text(
+            'このアイコンなんだろ',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 79, 144, 171),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.add_card),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.more_vert),
+            )
+          ]),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.spaceAround, //Column,Rowは間隔調整等
