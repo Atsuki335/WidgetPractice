@@ -33,20 +33,36 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+//3-7
       appBar: AppBar(
-        title: Text(widget.title),
-      ),
+          leading: Icon(Icons.access_time_filled_sharp),
+          title: Text(
+            'このアイコンなんだろ',
+            style: TextStyle(
+              color: Colors.white,
+            ),
+          ),
+          backgroundColor: Color.fromARGB(255, 79, 144, 171),
+          actions: <Widget>[
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.add_card),
+            ),
+            IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.more_vert),
+            )
+          ]),
       body: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween, //Column,Rowは間隔調整等
+          mainAxisAlignment: MainAxisAlignment.spaceAround, //Column,Rowは間隔調整等
           children: <Widget>[
             Container(
                 width: double.infinity, //横幅いっぱい
-                height: 60,
+                height: 10,
                 color: Colors.grey[200], //赤の波戦出たときは前にカンマ忘れてないか確認
-                child: Row(
+                child: ListView(
                   //Containerの中にもRow入れられる
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: <Widget>[
                     Container(
                         color: Color.fromARGB(255, 250, 131, 131),
@@ -69,7 +85,7 @@ class _MyHomePageState extends State<MyHomePage> {
             const Text(
               'ん？',
               style: TextStyle(
-                  fontSize: 24,
+                  fontSize: 10,
                   color: Color.fromARGB(200, 31, 172, 132),
                   fontWeight: FontWeight.bold,
                   fontStyle: FontStyle.italic),
@@ -80,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 //四角い箱（何を入れるか）
                 child: Text('(｡•ω•｡)', textAlign: TextAlign.right), //右寄せ
                 width: 80, //コンテナの縦横幅
-                height: 50,
+                height: 30,
                 padding: EdgeInsets.all(4), //内側の余白
                 margin: EdgeInsets.all(10), //外側の余白
                 decoration: BoxDecoration(
@@ -108,11 +124,22 @@ class _MyHomePageState extends State<MyHomePage> {
                     children: <Widget>[Text('わー'), Text('わーー')])),
             Container(
                 padding: EdgeInsets.only(top: 10),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                child: Wrap(
                   //Wrap:Rowの改行できる版　はみ出して工事カラー出て調べた
                   //Rowとの使い分けは？　Rowの方がいいとき
                   children: <Widget>[
+                    ElevatedButton(
+                      //2パージ目に行くボタン
+                      onPressed: () {
+                        Navigator.push(
+                          //Navigatorクラスを使って２ページ目に行く
+                          context,
+                          MaterialPageRoute(builder: (context) => SecondPage()),
+                        );
+                      },
+                      child: Text('２ページ目に行きます！'),
+                    ),
+
                     TextButton(
                         onPressed: null, //ボタン無効化（null)
                         child: Text('nullで押せないよ')),
@@ -144,3 +171,137 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
+//3-6 リストを表示
+
+class SecondPage extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+        title: 'Flutter Demo',
+        theme: ThemeData(primarySwatch: Colors.red),
+        home: Scaffold(body: Mylist()));
+  }
+} //class分け　リスト用
+
+class Mylist extends StatelessWidget {
+  final List<Map<String, dynamic>> listItems = [
+    {
+      'text': 'トトロ',
+      'color': Colors.grey[600],
+    }, //colorの後ろの[]数字は色の濃さ
+    {
+      'text': '中トトロ',
+      'color': Colors.grey[300],
+    },
+    {
+      'text': '小トトロ',
+      'color': Colors.grey[100],
+    }, //配列
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return SingleChildScrollView(
+      child: Column(children: <Widget>[
+        Container(
+            height: 200,
+            padding: EdgeInsets.all(4),
+            child: ListView(children: <Widget>[
+              Container(
+                height: 50,
+                color: Colors.white,
+                child: Text('undertale'),
+              ),
+              Container(
+                height: 50,
+                color: Color.fromARGB(231, 47, 130, 171),
+                child: Text('sanz'),
+              ),
+              Container(
+                height: 50,
+                color: Colors.yellow[200],
+                child: Text('papyrus'),
+              ),
+              Container(
+                  height: 50,
+                  color: Color.fromARGB(255, 194, 79, 79),
+                  child: Text('undyne'))
+            ])),
+        Container(
+            height: 150,
+            padding: EdgeInsets.all(4),
+            child: ListView.builder(
+              //配列を使ったListView
+              itemCount: listItems.length,
+              itemBuilder: (context, index) {
+                return Container(
+                  height: 50,
+                  color: listItems[index]['color'],
+                  child: Text(listItems[index]['text']),
+                );
+              },
+            )),
+        Container(
+            height: 150,
+            padding: EdgeInsets.all(4),
+            child: ListView.separated(
+                //項目の間にスペース入れる
+                itemCount: listItems.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    height: 50,
+                    color: listItems[index]['color'],
+                    child: Text(listItems[index]['text']),
+                  );
+                },
+                separatorBuilder: (context, index) {
+                  //項目の間のスペースに線入れる
+                  return Divider();
+                })),
+        Container(
+            height: 300,
+            child: ListView(children: [
+              //containerのlistviewの中にlisttile,card
+              ListTile(
+                leading: Image(
+                    image: AssetImage('images/kafun.png'),
+                    height: 50,
+                    width: 50),
+                title: Text('花粉つらい'),
+                subtitle: Text('説明書きみたいな'),
+                trailing: Icon(Icons.more_vert),
+              ),
+              Card(
+                child: Container(
+                    height: 60, width: double.infinity, child: Text('影つくんだって')),
+              ),
+              Card(
+                child: ListTile(
+                  leading: Image(
+                      image: AssetImage('images/dou.png'),
+                      height: 50,
+                      width: 50),
+                  title: Text('Listtileと'),
+                  subtitle: Text('card組み合わせ'),
+                  trailing: Icon(Icons.more_vert), //右の３点
+                ),
+              )
+            ])),
+        TextButton(
+            child: Text("戻る"),
+            // （1） 前の画面に戻る
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              );
+            })
+      ]),
+    );
+  }
+} //ListTileを書く場所がわからなくてエラー起きた
+
+//leadingの後に）をつけていなくてtitle,subtitle,trailingにエラー
+//
+           
