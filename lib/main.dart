@@ -343,15 +343,27 @@ class _MyWidgetState extends State<MyWidget> {
       mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: <Widget>[
         Text(count.toString()),
-        TextButton(
+        ElevatedButton(
           onPressed: () {
             setState(() {
               //setStateー>データを更新する時に呼ぶ
-              count = count + 1;
+              count = count + 1; //int count = 0 が+1更新されていく
             });
           },
           child: Text('カウントアップ'),
         ),
+        ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (count > 0) {
+                  count = count - 1;
+                } else {
+                  onPressed:
+                  null;
+                }
+              });
+            },
+            child: Text('カウントダウン')),
         TextButton(
             child: Text("1つ戻る"),
             // （1） 前の画面に戻る
