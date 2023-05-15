@@ -185,6 +185,9 @@ class SecondPage extends StatelessWidget {
 } //class分け　リスト用
 
 class Mylist extends StatelessWidget {
+  //statelessはbuildメソッドを持つ
+  //返すwidgetはStateful(MaterialApp)とかでもok
+  //stateの概念がないため動的に変化しない
   final List<Map<String, dynamic>> listItems = [
     {
       'text': 'トトロ',
@@ -260,7 +263,7 @@ class Mylist extends StatelessWidget {
                   return Divider();
                 })),
         Container(
-            height: 300,
+            height: 200,
             child: ListView(children: [
               //containerのlistviewの中にlisttile,card
               ListTile(
@@ -289,6 +292,17 @@ class Mylist extends StatelessWidget {
               )
             ])),
         TextButton(
+          //2パージ目に行くボタン
+          onPressed: () {
+            Navigator.push(
+              //Navigatorクラスを使って２ページ目に行く
+              context,
+              MaterialPageRoute(builder: (context) => MyWidget()),
+            );
+          },
+          child: Text('3ページ目に行きます！'),
+        ),
+        TextButton(
             child: Text("戻る"),
             // （1） 前の画面に戻る
             onPressed: () {
@@ -303,5 +317,72 @@ class Mylist extends StatelessWidget {
 } //ListTileを書く場所がわからなくてエラー起きた
 
 //leadingの後に）をつけていなくてtitle,subtitle,trailingにエラー
-//
-           
+
+//3-8状態をもったWidget
+//StatefulWidgetを継承するとStateが使える
+//StateをもとにUIが作成される
+class MyWidget extends StatefulWidget {
+  //使用するState（データ）を指定　　statefulはbuildを持たずcreateStateメソッドを持つ
+  //stateとwidgetの２つのクラスで構成されている
+  //Stateクラスがbuildメソッド、複雑な処理を受け持つ
+  @override
+  _MyWidgetState createState() => _MyWidgetState();
+}
+
+//stateを継承して使う
+class _MyWidgetState extends State<MyWidget> {
+  //データを宣言
+  int count = 0;
+
+//データを元にWidgetを作る
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Center(
+            child: Column(
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
+      children: <Widget>[
+        Text(count.toString()),
+        ElevatedButton(
+          onPressed: () {
+            setState(() {
+              //setStateー>データを更新する時に呼ぶ
+              count = count + 1; //int count = 0 が+1更新されていく
+            });
+          },
+          child: Text('カウントアップ'),
+        ),
+        ElevatedButton(
+            onPressed: () {
+              setState(() {
+                if (count > 0) {
+                  count = count - 1;
+                } else {
+                  onPressed:
+                  null;
+                }
+              });
+            },
+            child: Text('カウントダウン')),
+        TextButton(
+            child: Text("1つ戻る"),
+            // （1） 前の画面に戻る
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => SecondPage()),
+              );
+            }),
+        TextButton(
+            child: Text("最初に戻る"),
+            // （1） 前の画面に戻る
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => MyApp()),
+              );
+            })
+      ],
+    )));
+  }
+}
